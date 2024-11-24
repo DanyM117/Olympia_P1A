@@ -5,39 +5,56 @@
     <meta charset="UTF-8">
     <title>{% block title %}AGAN Multiservicios{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
 <body>
     {% if user.is_authenticated %}
     <p>Bienvenido, {{ user.username }}</p>
     <form method="POST" action="{% url 'logout' %}" style="display: inline;">
         {% csrf_token %}
-        <button type="submit">Cerrar sesion</button>
+        <button type="submit" class="btn btn-outline-secondary">Cerrar sesion</button>
     </form>
 
     {% if user.rol == 'Administrador' %}
     <!-- Menú del administrador -->
-    <nav>
-        <a href="{% url 'programar_agenda' %}">Programar Agenda</a> |
-        <a href="{% url 'gestionar_inventario' %}">Gestionar Inventario</a> |
-        <a href="{% url 'asignar_herramientas' %}">Asignar Herramientas</a> |
-        <a href="{% url 'generar_reporte_inventario' %}">Reporte Inventario</a> |
-        <a href="{% url 'generar_reporte_herramientas' %}">Reporte Herramientas</a> |
-        <a href="{% url 'enviar_notificacion' %}">Enviar Notificacion</a>
-    </nav>
+    <ul class="nav nav-underline">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'programar_agenda' %}">Programar Agenda</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'gestionar_inventario' %}">Gestionar Inventario</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'asignar_herramientas' %}">Asignar Herramientas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'generar_reporte_inventario' %}">Reporte Inventario</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'generar_reporte_herramientas' %}">Reporte Herramientas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'enviar_notificacion' %}">Enviar Notificacion</a>
+        </li>
+    </ul>
     {% elif user.rol == 'Tecnico' %}
     <!-- Menú del técnico -->
-    <nav>
-        <a href="{% url 'consulta_agenda_tecnico' %}">Consultar Agenda</a> |
+    <ul class="nav nav-underline">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'consulta_agenda_tecnico' %}">Consultar Agenda</a>
+        </li>
         <!-- Agrega otros enlaces si es necesario -->
-    </nav>
+    </ul>
     {% elif user.rol == 'Cliente' %}
     <!-- Menú del cliente -->
-    <nav>
-        <a href="{% url 'consulta_agenda_cliente' %}">Consultar Agenda</a>
-    </nav>
+    <ul class="nav nav-underline">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'consulta_agenda_cliente' %}">Consultar Agenda</a>
+        </li>
+    </ul>
     {% endif %}
     {% else %}
-    <p><a href="{% url 'login' %}">Iniciar sesion</a></p>
+    <p><a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesion</a></p>
     {% endif %}
 
     {% if messages %}
@@ -52,5 +69,6 @@
     {% block content %}
     <!-- Contenido específico de cada página -->
     {% endblock %}
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

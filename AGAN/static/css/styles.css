@@ -1,5 +1,120 @@
 /* static/css/styles.css */
+/* Paleta de Colores y Tipografía */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    font-family: 'Arial, sans-serif';
+    background-color: #f0f2f5; /* Fondo suave para una mejor estética */
+    color: #333; /* Texto en color gris oscuro para buena legibilidad */
 }
+
+/* Mejoras en los Botones */
+button, .btn {
+    background-color: #007bff; /* Azul primario */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    button:hover, .btn:hover {
+        background-color: #0056b3; /* Azul oscuro al pasar el mouse */
+    }
+
+/* Estilos para Formularios */
+input[type="text"], input[type="password"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Encabezados */
+h1, h2, h3 {
+    color: #0056b3; /* Azul oscuro para destacar los encabezados */
+    margin-bottom: 15px;
+}
+
+/* Espaciado y Layout */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* Menú de Navegación */
+.navbar {
+    background-color: #007bff;
+    padding: 15px;
+    color: white;
+}
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+    }
+
+        .navbar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+
+/* Mejoras para la Responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .navbar {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
+
+/* Mejoras Visuales para Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Elementos interactivos */
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    a:hover {
+        color: #0056b3;
+    }
