@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Reporte de Inventario{% endblock %}
+
+{% block content %}
+<h1>Reporte de Inventario</h1>
+
+<h2>Entradas</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+            <th>Descripcion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entrada in entradas %}
+        <tr>
+            <td>{{ entrada.nombre }}</td>
+            <td>{{ entrada.tipo }}</td>
+            <td>{{ entrada.cantidad }}</td>
+            <td>{{ entrada.fecha }}</td>
+            <td>{{ entrada.descripcion }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay entradas registradas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Salidas</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+            <th>Descripcion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for salida in salidas %}
+        <tr>
+            <td>{{ salida.nombre }}</td>
+            <td>{{ salida.tipo }}</td>
+            <td>{{ salida.cantidad }}</td>
+            <td>{{ salida.fecha }}</td>
+            <td>{{ salida.descripcion }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay salidas registradas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

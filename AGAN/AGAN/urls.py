@@ -4,7 +4,6 @@ from base_datos import views
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
 
     # Autenticación
     path('', LoginView.as_view(template_name='auth/login.html'), name='login'),
@@ -21,6 +20,7 @@ urlpatterns = [
     path('admin/generar_reporte_inventario/', views.generar_reporte_inventario, name='generar_reporte_inventario'),
     path('admin/generar_reporte_herramientas/', views.generar_reporte_herramientas, name='generar_reporte_herramientas'),
     path('admin/enviar_notificacion/', views.enviar_notificacion, name='enviar_notificacion'),
+    path('admin/', admin.site.urls),
 
     # Rutas para el técnico
     path('tecnico/consulta_agenda/', views.consulta_agenda_tecnico, name='consulta_agenda_tecnico'),

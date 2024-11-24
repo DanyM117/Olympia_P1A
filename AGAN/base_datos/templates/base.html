@@ -8,7 +8,12 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-    <p>Bienvenido, {{ user.username }} | <a href="{% url 'logout' %}">Cerrar sesión</a></p>
+    <p>Bienvenido, {{ user.username }}</p>
+    <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesion</button>
+    </form>
+
     {% if user.rol == 'Administrador' %}
     <!-- Menú del administrador -->
     <nav>
@@ -17,7 +22,7 @@
         <a href="{% url 'asignar_herramientas' %}">Asignar Herramientas</a> |
         <a href="{% url 'generar_reporte_inventario' %}">Reporte Inventario</a> |
         <a href="{% url 'generar_reporte_herramientas' %}">Reporte Herramientas</a> |
-        <a href="{% url 'enviar_notificacion' %}">Enviar Notificación</a>
+        <a href="{% url 'enviar_notificacion' %}">Enviar Notificacion</a>
     </nav>
     {% elif user.rol == 'Tecnico' %}
     <!-- Menú del técnico -->
@@ -32,7 +37,7 @@
     </nav>
     {% endif %}
     {% else %}
-    <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
+    <p><a href="{% url 'login' %}">Iniciar sesion</a></p>
     {% endif %}
 
     {% if messages %}

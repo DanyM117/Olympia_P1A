@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Enviar Notificación{% endblock %}
+{% block title %}Enviar Notificacion{% endblock %}
 
 {% block content %}
-<h1>Enviar Notificación</h1>
+<h1>Enviar Notificacion</h1>
 <form method="POST">
     {% csrf_token %}
-    <textarea name="contenido" rows="4" cols="50" placeholder="Escribe tu notificación aquí"></textarea><br><br>
+    <textarea name="contenido" rows="4" cols="50" placeholder="Escribe tu notificacion aqui"></textarea><br><br>
     <button type="submit">Enviar</button>
 </form>
 {% endblock %}

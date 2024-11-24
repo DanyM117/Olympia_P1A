@@ -4,17 +4,17 @@
 
 {% block content %}
 <h1>Bienvenido a AGAN Multiservicios</h1>
-<p>Selecciona una opción del menú.</p>
+<p>Selecciona una opcion del menu.</p>
 
 {% if user.is_authenticated %}
     {% if user.rol == 'Administrador' %}
-<p>Has iniciado sesión como <strong>Administrador</strong>.</p>
+<p>Has iniciado sesion como <strong>Administrador</strong>.</p>
     {% elif user.rol == 'Tecnico' %}
-<p>Has iniciado sesión como <strong>Técnico</strong>.</p>
+<p>Has iniciado sesion como <strong>Tecnico</strong>.</p>
     {% elif user.rol == 'Cliente' %}
-<p>Has iniciado sesión como <strong>Cliente</strong>.</p>
+<p>Has iniciado sesion como <strong>Cliente</strong>.</p>
     {% endif %}
 {% else %}
-<p>No has iniciado sesión.</p>
+<p>No has iniciado sesion.</p>
 {% endif %}
 {% endblock %}

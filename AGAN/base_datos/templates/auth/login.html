@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio de Sesión</title>
+    <title>Inicio de Sesion</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
@@ -13,14 +13,14 @@
         <label for="username">Usuario:</label>
         <input type="text" id="username" name="username" required><br><br>
 
-        <label for="password">Contraseña:</label>
+        <label for="password">Contrasena:</label>
         <input type="password" id="password" name="password" required><br><br>
 
         <button type="submit">Ingresar</button>
     </form>
 
     {% if form.errors %}
-    <p style="color: red;">Usuario o contraseña incorrectos.</p>
+    <p style="color: red;">Usuario o contrasena incorrectos.</p>
     {% endif %}
     <p>Is Authenticated: {{ user.is_authenticated }}</p>
 </body>

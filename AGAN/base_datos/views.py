@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Usuario, Herramienta, Servicio, Notificacion, Reporte, Agenda
+from .models import Usuario, Movimiento, Herramienta, Servicio, Notificacion, Reporte, Agenda
 from .forms import ProgramarAgendaForm, RegistroServicioForm, AsignarHerramientaForm, ConfirmacionServicioForm, RetroalimentacionForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -57,7 +57,7 @@ def asignar_herramientas(request):
         form = AsignarHerramientaForm()
     return render(request, 'admin/asignar_herramientas.html', {'form': form})
 
-@login_required
+"""@login_required
 @user_passes_test(es_administrador)
 def generar_reporte_inventario(request):
     herramientas = Herramienta.objects.all()
@@ -79,7 +79,20 @@ def generar_reporte_herramientas(request):
         generado_por=request.user,
         contenido='Contenido del reporte de utilizacion de herramientas.'
     )
+    return render(request, 'admin/reporte_herramientas.html', {'movimientos': movimientos})"""
+
+@login_required
+@user_passes_test(es_administrador)
+def generar_reporte_inventario(request):
+    herramientas = Herramienta.objects.all()
+    return render(request, 'admin/reporte_inventario.html', {'herramientas': herramientas})
+
+@login_required
+@user_passes_test(es_administrador)
+def generar_reporte_herramientas(request):
+    movimientos = Movimiento.objects.all()
     return render(request, 'admin/reporte_herramientas.html', {'movimientos': movimientos})
+
 
 @login_required
 @user_passes_test(es_administrador)
