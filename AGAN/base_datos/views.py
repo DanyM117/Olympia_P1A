@@ -1,3 +1,5 @@
+
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Usuario, Movimiento, Herramienta, Servicio, Notificacion, Reporte, Agenda
@@ -28,7 +30,22 @@ def programar_agenda(request):
         form = ProgramarAgendaForm(request.POST)
         if form.is_valid():
             agenda = form.save()
-            messages.success(request, 'Agenda programada exitosamente.')
+            # Notificar al cliente y al tecnico sobre la nueva agenda
+            Notificacion.objects.create(
+                usuario=agenda.servicio.cliente,
+                tipo='Recordatorio',
+                fecha_envio=timezone.now(),
+                contenido=f'Su servicio ha sido programado para {agenda.fecha} a las {agenda.hora}.',
+                estado='Pendiente'
+            )
+            Notificacion.objects.create(
+                usuario=agenda.servicio.tecnico,
+                tipo='Recordatorio',
+                fecha_envio=timezone.now(),
+                contenido=f'Se ha asignado un nuevo servicio para el {agenda.fecha} a las {agenda.hora}.',
+                estado='Pendiente'
+            )
+            messages.success(request, 'Agenda programada exitosamente y notificaciones enviadas.')
             return redirect('programar_agenda')
         else:
             messages.error(request, 'Error al programar la agenda.')
@@ -48,8 +65,18 @@ def asignar_herramientas(request):
     if request.method == 'POST':
         form = AsignarHerramientaForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Herramienta asignada exitosamente.')
+            herramienta = form.save(commit=False)
+            herramienta.estado = 'En Uso'
+            herramienta.save()
+            # Registrar el movimiento de herramienta
+            Movimiento.objects.create(
+                tipo='Egreso',
+                herramienta=herramienta,
+                cantidad=herramienta.cantidad,
+                fecha=timezone.now(),
+                responsable=request.user
+            )
+            messages.success(request, 'Herramienta asignada exitosamente y movimiento registrado.')
             return redirect('asignar_herramientas')
         else:
             messages.error(request, 'Error al asignar la herramienta.')
@@ -57,7 +84,7 @@ def asignar_herramientas(request):
         form = AsignarHerramientaForm()
     return render(request, 'admin/asignar_herramientas.html', {'form': form})
 
-"""@login_required
+@login_required
 @user_passes_test(es_administrador)
 def generar_reporte_inventario(request):
     herramientas = Herramienta.objects.all()
@@ -65,9 +92,9 @@ def generar_reporte_inventario(request):
         tipo='Inventario',
         fecha_creacion=timezone.now(),
         generado_por=request.user,
-        contenido='Contenido del reporte de inventario.'
+        contenido='Reporte detallado del estado del inventario.'
     )
-    return render(request, 'admin/reporte_inventario.html', {'herramientas': herramientas})
+    return render(request, 'admin/reporte_inventario.html', {'herramientas': herramientas, 'reporte': reporte})
 
 @login_required
 @user_passes_test(es_administrador)
@@ -77,22 +104,9 @@ def generar_reporte_herramientas(request):
         tipo='Utilizacion',
         fecha_creacion=timezone.now(),
         generado_por=request.user,
-        contenido='Contenido del reporte de utilizacion de herramientas.'
+        contenido='Reporte detallado de la utilizacion de las herramientas.'
     )
-    return render(request, 'admin/reporte_herramientas.html', {'movimientos': movimientos})"""
-
-@login_required
-@user_passes_test(es_administrador)
-def generar_reporte_inventario(request):
-    herramientas = Herramienta.objects.all()
-    return render(request, 'admin/reporte_inventario.html', {'herramientas': herramientas})
-
-@login_required
-@user_passes_test(es_administrador)
-def generar_reporte_herramientas(request):
-    movimientos = Movimiento.objects.all()
-    return render(request, 'admin/reporte_herramientas.html', {'movimientos': movimientos})
-
+    return render(request, 'admin/reporte_herramientas.html', {'movimientos': movimientos, 'reporte': reporte})
 
 @login_required
 @user_passes_test(es_administrador)
@@ -112,7 +126,7 @@ def enviar_notificacion(request):
         return redirect('enviar_notificacion')
     return render(request, 'admin/enviar_notificacion.html')
 
-# Técnico
+# Tecnico
 
 @login_required
 @user_passes_test(es_tecnico)
@@ -149,7 +163,6 @@ def confirmacion_servicio(request, servicio_id):
         if form.is_valid() and retro_form.is_valid():
             servicio.estado = 'Completado'
             servicio.save()
-            # Guardar retroalimentación (no implementado en modelos)
             messages.success(request, 'Servicio confirmado. Gracias por tu retroalimentacion!')
             return redirect('consulta_agenda_cliente')
         else:
