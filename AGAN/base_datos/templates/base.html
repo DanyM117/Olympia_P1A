@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}AGAN Multiservicios{% endblock %}</title>
+    <!-- Agrega enlaces a CSS de Bootstrap si lo deseas -->
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <p>Bienvenido, {{ user.username }} | <a href="{% url 'logout' %}">Cerrar sesión</a></p>
+    {% if user.rol == 'Administrador' %}
+    <!-- Menú del administrador -->
+    <nav>
+        <a href="{% url 'programar_agenda' %}">Programar Agenda</a> |
+        <a href="{% url 'gestionar_inventario' %}">Gestionar Inventario</a> |
+        <a href="{% url 'asignar_herramientas' %}">Asignar Herramientas</a> |
+        <a href="{% url 'generar_reporte_inventario' %}">Reporte Inventario</a> |
+        <a href="{% url 'generar_reporte_herramientas' %}">Reporte Herramientas</a> |
+        <a href="{% url 'enviar_notificacion' %}">Enviar Notificación</a>
+    </nav>
+    {% elif user.rol == 'Tecnico' %}
+    <!-- Menú del técnico -->
+    <nav>
+        <a href="{% url 'consulta_agenda_tecnico' %}">Consultar Agenda</a> |
+        <a href="{% url 'registro_servicio' servicio_id=1 %}">Registrar Servicio</a> <!-- Ajusta el servicio_id -->
+    </nav>
+    {% elif user.rol == 'Cliente' %}
+    <!-- Menú del cliente -->
+    <nav>
+        <a href="{% url 'consulta_agenda_cliente' %}">Consultar Agenda</a>
+    </nav>
+    {% endif %}
+    {% else %}
+    <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
+    {% endif %}
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% block content %}
+    <!-- Contenido específico de cada página -->
+    {% endblock %}
+</body>
+</html>

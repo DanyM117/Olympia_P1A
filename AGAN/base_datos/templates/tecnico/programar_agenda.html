@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programar Agenda</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <h1>Programar Nueva Cita</h1>
+
+    {% if user.usuario.rol == 'T�cnico' %}
+    <form method="POST">
+        {% csrf_token %}
+        <label for="cliente">Cliente:</label>
+        <select name="cliente" id="cliente">
+            {% for cliente in clientes %}
+            <option value="{{ cliente.id_cliente }}">{{ cliente.nombre }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="fecha">Fecha:</label>
+        <input type="date" name="fecha" id="fecha"><br><br>
+
+        <label for="hora">Hora:</label>
+        <input type="time" name="hora" id="hora"><br><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    {% else %}
+    <p>No tienes permiso para programar citas.</p>
+    {% endif %}
+    {% else %}
+    <p>Debes iniciar sesi�n para acceder a esta p�gina. <a href="{% url 'login' %}">Iniciar sesi�n</a></p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Inventario{% endblock %}
+
+{% block content %}
+<h1>Inventario de Herramientas</h1>
+<table border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Estado</th>
+        <th>Cantidad</th>
+        <th>Ubicación</th>
+    </tr>
+    {% for herramienta in herramientas %}
+    <tr>
+        <td>{{ herramienta.nombre }}</td>
+        <td>{{ herramienta.estado }}</td>
+        <td>{{ herramienta.cantidad }}</td>
+        <td>{{ herramienta.ubicacion }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

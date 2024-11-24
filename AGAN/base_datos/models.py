@@ -1,36 +1,26 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class Usuario(models.Model):
+class Usuario(AbstractUser):
     ROLES = [
         ('Administrador', 'Administrador'),
         ('Tecnico', 'Tecnico'),
-    ]
-    ESTADOS = [
-        ('Activo', 'Activo'),
-        ('Inactivo', 'Inactivo'),
+        ('Cliente', 'Cliente'),
     ]
 
-    id_usuario = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    rol = models.CharField(max_length=15, choices=ROLES)
-    correo = models.EmailField(max_length=100)
-    telefono = models.CharField(max_length=20)
-    estado = models.CharField(max_length=8, choices=ESTADOS)
+    rol = models.CharField(max_length=15, choices=ROLES, default='Cliente')
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    direccion = models.TextField(blank=True, null=True)
+    # Otros campos adicionales si es necesario
 
     def __str__(self):
-        return self.nombre
-
+        return self.username
 
 class Cliente(models.Model):
-    id_cliente = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=20)
-    direccion = models.TextField()
-    correo = models.EmailField(max_length=100)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
-        return self.nombre
-
+        return self.usuario.username
 
 class Herramienta(models.Model):
     ESTADOS = [
@@ -48,7 +38,6 @@ class Herramienta(models.Model):
     def __str__(self):
         return self.nombre
 
-
 class Servicio(models.Model):
     ESTADOS = [
         ('Pendiente', 'Pendiente'),
@@ -57,16 +46,15 @@ class Servicio(models.Model):
     ]
 
     id_servicio = models.AutoField(primary_key=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    tecnico = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='servicios_cliente', limit_choices_to={'rol': 'Cliente'})
+    tecnico = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='servicios_tecnico', limit_choices_to={'rol': 'Tecnico'})
     fecha = models.DateField()
     duracion = models.IntegerField()
     estado = models.CharField(max_length=12, choices=ESTADOS)
     descripcion = models.TextField()
 
     def __str__(self):
-        return f"{self.cliente.nombre} - {self.fecha}"
-
+        return f"{self.cliente.username} - {self.fecha}"
 
 class Movimiento(models.Model):
     TIPOS = [
@@ -83,7 +71,6 @@ class Movimiento(models.Model):
 
     def __str__(self):
         return f"{self.tipo} - {self.herramienta.nombre}"
-
 
 class Notificacion(models.Model):
     TIPOS = [
@@ -104,24 +91,24 @@ class Notificacion(models.Model):
     estado = models.CharField(max_length=9, choices=ESTADOS)
 
     def __str__(self):
-        return f"{self.tipo} - {self.usuario.nombre}"
-
+        return f"{self.tipo} - {self.usuario.username}"
 
 class Reporte(models.Model):
     TIPOS = [
         ('Inventario', 'Inventario'),
         ('Servicios', 'Servicios'),
+        ('Rendimiento', 'Rendimiento'),
+        ('Utilizacion', 'Utilizacion'),
     ]
 
     id_reporte = models.AutoField(primary_key=True)
-    tipo = models.CharField(max_length=10, choices=TIPOS)
+    tipo = models.CharField(max_length=15, choices=TIPOS)
     fecha_creacion = models.DateTimeField()
     generado_por = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     contenido = models.TextField()
 
     def __str__(self):
         return f"{self.tipo} - {self.fecha_creacion}"
-
 
 class Agenda(models.Model):
     ESTADOS = [
@@ -136,4 +123,4 @@ class Agenda(models.Model):
     estado = models.CharField(max_length=10, choices=ESTADOS)
 
     def __str__(self):
-        return f"{self.fecha} - {self.servicio.cliente.nombre}"
+        return f"{self.fecha} - {self.servicio.cliente.username}"

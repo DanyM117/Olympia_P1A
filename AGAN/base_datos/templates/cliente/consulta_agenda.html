@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Consulta de Agenda{% endblock %}
+
+{% block content %}
+<h1>Agenda de Servicios</h1>
+<table border="1">
+    <tr>
+        <th>Técnico</th>
+        <th>Fecha</th>
+        <th>Duración</th>
+        <th>Estado</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+    </tr>
+    {% for servicio in servicios %}
+    <tr>
+        <td>{{ servicio.tecnico.username }}</td>
+        <td>{{ servicio.fecha }}</td>
+        <td>{{ servicio.duracion }}</td>
+        <td>{{ servicio.estado }}</td>
+        <td>{{ servicio.descripcion }}</td>
+        <td>
+            {% if servicio.estado != 'Completado' %}
+            <a href="{% url 'confirmacion_servicio' servicio.id_servicio %}">Confirmar Servicio</a>
+            {% else %}
+            Completado
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

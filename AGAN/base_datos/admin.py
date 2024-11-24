@@ -1,7 +1,13 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from .models import Usuario, Cliente, Herramienta, Servicio, Movimiento, Notificacion, Reporte, Agenda
 
-admin.site.register(Usuario)
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        ('Informacion Adicional', {'fields': ('rol', 'telefono', 'direccion')}),
+    )
+
+admin.site.register(Usuario, CustomUserAdmin)
 admin.site.register(Cliente)
 admin.site.register(Herramienta)
 admin.site.register(Servicio)

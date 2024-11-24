@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Asignar Herramientas{% endblock %}
+
+{% block content %}
+<h1>Asignar Herramientas</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Asignar</button>
+</form>
+{% endblock %}

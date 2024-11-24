@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Consulta de Agenda{% endblock %}
+
+{% block content %}
+<h1>Agenda de Servicios</h1>
+<table border="1">
+    <tr>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Estado</th>
+        <th>Descripción</th>
+    </tr>
+    {% for servicio in servicios %}
+    <tr>
+        <td>{{ servicio.cliente.username }}</td>
+        <td>{{ servicio.fecha }}</td>
+        <td>{{ servicio.duracion }}</td>
+        <td>{{ servicio.estado }}</td>
+        <td>{{ servicio.descripcion }}</td>
+        <td><a href="{% url 'registro_servicio' servicio.id_servicio %}">Registrar Cumplimiento</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

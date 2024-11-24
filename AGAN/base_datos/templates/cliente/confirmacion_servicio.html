@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmación de Servicio{% endblock %}
+
+{% block content %}
+<h1>Confirmar Servicio</h1>
+<p>¿Deseas confirmar que el servicio ha sido completado?</p>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ retro_form.as_p }}
+    <button type="submit">Confirmar</button>
+</form>
+{% endblock %}
