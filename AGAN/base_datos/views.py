@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Usuario, Cliente, Herramienta, Servicio, Notificacion, Reporte, Agenda
+from .models import Usuario, Herramienta, Servicio, Notificacion, Reporte, Agenda
 from .forms import ProgramarAgendaForm, RegistroServicioForm, AsignarHerramientaForm, ConfirmacionServicioForm, RetroalimentacionForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -30,6 +30,8 @@ def programar_agenda(request):
             agenda = form.save()
             messages.success(request, 'Agenda programada exitosamente.')
             return redirect('programar_agenda')
+        else:
+            messages.error(request, 'Error al programar la agenda.')
     else:
         form = ProgramarAgendaForm()
     return render(request, 'admin/programar_agenda.html', {'form': form})
@@ -49,6 +51,8 @@ def asignar_herramientas(request):
             form.save()
             messages.success(request, 'Herramienta asignada exitosamente.')
             return redirect('asignar_herramientas')
+        else:
+            messages.error(request, 'Error al asignar la herramienta.')
     else:
         form = AsignarHerramientaForm()
     return render(request, 'admin/asignar_herramientas.html', {'form': form})
@@ -114,6 +118,8 @@ def registro_cumplimiento_servicio(request, servicio_id):
             servicio.save()
             messages.success(request, 'Servicio registrado como completado.')
             return redirect('consulta_agenda_tecnico')
+        else:
+            messages.error(request, 'Error al registrar el servicio.')
     else:
         form = RegistroServicioForm(instance=servicio)
     return render(request, 'tecnico/registro_servicio.html', {'form': form})
@@ -133,6 +139,8 @@ def confirmacion_servicio(request, servicio_id):
             # Guardar retroalimentación (no implementado en modelos)
             messages.success(request, 'Servicio confirmado. Gracias por tu retroalimentacion!')
             return redirect('consulta_agenda_cliente')
+        else:
+            messages.error(request, 'Error al confirmar el servicio.')
     else:
         form = ConfirmacionServicioForm(instance=servicio)
         retro_form = RetroalimentacionForm()

@@ -24,7 +24,7 @@ urlpatterns = [
 
     # Rutas para el técnico
     path('tecnico/consulta_agenda/', views.consulta_agenda_tecnico, name='consulta_agenda_tecnico'),
-    path('tecnico/registro_servicio/', views.registro_cumplimiento_servicio, name='registro_servicio'),
+    path('tecnico/registro_servicio/<int:servicio_id>/', views.registro_cumplimiento_servicio, name='registro_servicio'),
 
     # Rutas para el cliente
     path('cliente/confirmacion_servicio/<int:servicio_id>/', views.confirmacion_servicio, name='confirmacion_servicio'),

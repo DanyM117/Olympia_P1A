@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Usuario, Cliente, Herramienta, Servicio, Movimiento, Notificacion, Reporte, Agenda
+from .models import Usuario, Herramienta, Servicio, Movimiento, Notificacion, Reporte, Agenda
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -8,7 +8,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
 admin.site.register(Usuario, CustomUserAdmin)
-admin.site.register(Cliente)
+#admin.site.register(Cliente)
 admin.site.register(Herramienta)
 admin.site.register(Servicio)
 admin.site.register(Movimiento)

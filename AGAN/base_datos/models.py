@@ -16,12 +16,6 @@ class Usuario(AbstractUser):
     def __str__(self):
         return self.username
 
-class Cliente(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
-
-    def __str__(self):
-        return self.usuario.username
-
 class Herramienta(models.Model):
     ESTADOS = [
         ('Disponible', 'Disponible'),
